@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kuro Cipher</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+
+	<style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+</head>
+
+<body>
+    <div class="wrapper">
+    	<main class="container py-5">
+    		<div class="d-flex flex-row-reverse">
+				  <div class="p-2">
+				  	<button type="button" id="clearTextAreas" class="btn btn-danger"><i class="bi-trash"></i> Clear</button>
+				  </div>
+				</div>
+ 			 <div class="row" data-masonry='{"percentPosition": true }'>
+			   	<div class="col-sm-12 col-lg-6 mb-4">
+			      <div class="card">
+			        <div class="card-body">
+         		 		<h5 class="card-title">English Text</h5>
+	             	<textarea class="form-control" id="englishText" rows="10"></textarea>
+			        </div>
+			      </div>
+			    </div>
+			    <div class="col-sm-12 col-lg-6 mb-4">
+			      <div class="card">
+			        <div class="card-body">
+			          <h5 class="card-title">Encoded Text</h5>
+								<textarea class="form-control" id="encodedText" rows="10" ></textarea>
+			        </div>
+			      </div>
+			    </div>
+	  		</div>
+		</main>
+
+  		<nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
+		  <div class="container-fluid">
+		    <a class="navbar-brand" href="#">Kuro Cipher</a>
+		  </div>
+		</nav>
+    </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
+
+	<script type="text/javascript">
+		$( document ).ready(function() {
+	    $("#englishText").keyup(function(e) {
+	    	let value = $("#englishText").val();
+	    	var result = encodeCipher(value);
+    		$("#encodedText").val(result);    		
+	    })
+
+	    $("#encodedText").keyup(function(e) {
+	    	let value = $("#encodedText").val();
+	    	var result = decodeCipher(value);
+    		$("#englishText").val(result);    		
+	    })
+
+	    $("#clearTextAreas").click(function(e) {
+	    	$("#encodedText").val('');
+	    	$("#englishText").val('');
+	    })
+
+	    let encodeCipher = (str) => {
+			  //Deciphered reference letters
+			  let encoded = {
+			    a: '⅃', b: 'ⵡ', c: 'L',
+			    d: 'コ', e: 'ロ', f: 'ⵎ',
+			    g: 'ᒣ', h: 'П', i: 'ᒥ',
+			    j: 'ᒲ	', k: '⨃', l: 'ᒷ',
+			    m: 'ᑔ', n: '⚀', o: 'Ͼ',
+			    p: 'ךּ', q: '⩀', r: '⟔',
+			    s: 'ⴸ', t: 'く', u: 'ᨈ',
+			    v: '＞', w: 'ᨉ', x: 'ᑅ',
+			    y: 'ᨊ', z: 'ᐷ'
+			  }
+			  
+			  //convert the string to lowercase
+			  str = str.toLowerCase();
+			  //encode the code
+			  let cipher = '';
+
+			  for(let i = 0 ; i < str.length; i++){
+			  	if (str[i] in encoded) {
+			  		cipher += encoded[str[i]];
+					} else {
+						cipher += str[i];
+					}
+			  }
+			  
+			  //return the output
+			  return cipher;
+			}
+
+			let decodeCipher = (str) => {
+			  //Deciphered reference letters
+			  let decoded = {
+					'⅃': 'a',  'ⵡ': 'b',  'L': 'c',
+					'コ': 'd',  'ロ': 'e',  'ⵎ': 'f',
+					'ᒣ': 'g',  'П': 'h',  'ᒥ': 'i',
+					'ᒲ'	: 'j',  '⨃': 'k',  'ᒷ': 'l',
+					'ᑔ': 'm',  '⚀': 'n',  'Ͼ': 'o',
+					'ךּ': 'p',  '⩀': 'q',  '⟔': 'r',
+					'ⴸ': 's',  'く': 't',  'ᨈ': 'u',
+					'＞': 'v',  'ᨉ': 'w',  'ᑅ': 'x',
+					'ᨊ': 'y',  'ᐷ': 'z'
+			  }
+			  
+			  //convert the string to lowercase
+			  str = str.toLowerCase();
+			  //encode the code
+			  let decipher = '';
+
+			  for(let i = 0 ; i < str.length; i++){
+			  	if (str[i] in decoded) {
+			  		decipher += decoded[str[i]];
+					} else {
+						decipher += str[i];
+					}
+			  }
+			  
+			  //return the output
+			  return decipher;
+			}
+		});
+	</script>
+</body>
+</html>
